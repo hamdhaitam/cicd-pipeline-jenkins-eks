@@ -1,0 +1,12 @@
+---
+- hosts: kubernetes
+  user: root
+  tasks:
+    - name: Deploy app
+      command: kubectl apply -f regapp-deployment.yml
+
+    - name: Create service
+      command: kubectl apply -f regapp-service.yml
+
+    - name: Restart deployment
+      command: kubectl rollout restart deployment.apps/regappcluster-regapp
