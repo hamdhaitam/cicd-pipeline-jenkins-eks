@@ -4,6 +4,7 @@
 
 This project implements a complete CI/CD pipeline using Jenkins, Ansible, Docker, and Kubernetes (EKS) on AWS.
 
+<img src="./screenshots/project_diagram.png" width="600"/>
 
 ## 🛠 Tools Used
 - Jenkins
