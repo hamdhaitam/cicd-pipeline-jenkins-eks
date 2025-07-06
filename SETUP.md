@@ -1,4 +1,5 @@
-# Jenkins Installation
+# Setup
+## Jenkins Installation
 Official Docs:
 - https://www.jenkins.io/doc/book/installing/linux/
 - https://www.jenkins.io/doc/tutorials/tutorial-for-installing-jenkins-on-AWS/
@@ -20,7 +21,7 @@ java -version
 javac -version
 ```
 
-# Install and Configure Maven
+## Install and Configure Maven
 Official Docs:
 - https://maven.apache.org/install.html
 - https://maven.apache.org/download.cgi
@@ -45,7 +46,7 @@ source ~/.bash_profile
 mvn -v
 ```
 
-# Setup Ansible Server and Install Ansible
+## Setup Ansible Server and Install Ansible
 ```bash
 sudo nano /etc/hostname      # Optional: change hostname
 sudo useradd ansadmin
@@ -64,7 +65,7 @@ sudo amazon-linux-extras install ansible2
 ansible --version
 ```
 
-# Integrate Ansible with Jenkins
+## Integrate Ansible with Jenkins
 ```bash
 cd /opt
 sudo mkdir docker
@@ -79,7 +80,7 @@ In Jenkins:
   - Remove prefix: webapp/target
   - Remote directory: /opt/docker
 
-# Install & Configure Docker on Ansible Server
+## Install & Configure Docker on Ansible Server
 ```bash
 sudo yum install docker
 sudo usermod -aG docker ansadmin
@@ -93,7 +94,7 @@ RUN cp -R /usr/local/tomcat/webapps.dist/* /usr/local/tomcat/webapps
 COPY ./*.war /usr/local/tomcat/webapps
 ```
 
-# Create Ansible Playbook to Build & Push Docker Image
+## Create Ansible Playbook to Build & Push Docker Image
 Update `/etc/ansible/hosts`:
 ```ini
 [ansible]
@@ -125,7 +126,7 @@ Run:
 ansible-playbook create_image_regapp.yml
 ```
 
-# Setup Bootstrap Server (for Kubernetes Tools)
+## Setup Bootstrap Server (for Kubernetes Tools)
 Install AWS CLI:
 ```bash
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -149,7 +150,7 @@ sudo mv /tmp/eksctl /usr/local/bin
 eksctl version
 ```
 
-# Create EKS Cluster
+## Create EKS Cluster
 ```bash
 eksctl create cluster --name your-cluster-name \
 # Change region and node-type
@@ -158,7 +159,7 @@ eksctl create cluster --name your-cluster-name \
 kubectl get nodes
 ```
 
-# Kubernetes Manifests
+## Kubernetes Manifests
 Deployment (`regapp-deployment.yml`):
 ```yaml
 apiVersion: apps/v1
@@ -199,7 +200,7 @@ spec:
   type: LoadBalancer
 ```
 
-# Connect Bootstrap Server with Ansible
+## Connect Bootstrap Server with Ansible
 ```bash
 passwd root
 nano /etc/ansible/hosts
@@ -217,7 +218,7 @@ nano /etc/ansible/hosts
 ssh-copy-id root@<bootstrap-server-ip>
 ```
 
-# Ansible Deployment Playbook for Kubernetes
+## Ansible Deployment Playbook for Kubernetes
 ```yaml
 ---
 - hosts: kubernetes
@@ -238,7 +239,7 @@ Run:
 ansible-playbook /opt/docker/kube_deploy.yml
 ```
 
-# Cleanup
+## Cleanup
 ```
 kubectl delete deployment.apps/regapp-cluster-regapp
 kubectl delete service/regapp-cluster-service
